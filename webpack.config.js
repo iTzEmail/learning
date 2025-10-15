@@ -37,10 +37,11 @@ module.exports = {
             })
         ),
 
-        // CopyWebPackPlugin to copy CSS folder
+        // CopyWebPackPlugin
         new CopyWebPackPlugin({
         patterns: [
-            { from: 'src/css', to: 'css' }
+            { from: 'src/css', to: 'css' }, // CSS files
+            { from: 'src/assets', to: 'assets', noErrorOnMissing: true } // Copy assets
         ]
         })
     ],
