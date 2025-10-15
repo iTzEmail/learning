@@ -188,7 +188,7 @@ updateBook.addEventListener('submit', (e) => {
 
 
 // Unsubscribe from changes (for testing purposes)
-const unsub = document.querySelector('.unsub-col');
+const unsub = document.querySelector('.unsub');
 unsub.addEventListener('click', () => {
     console.log('Unsubscribing from collection changes');
 
