@@ -1,6 +1,6 @@
 import { auth, db } from "../main/firebase.js";
-import { addDoc, serverTimestamp } from "firebase/firestore";
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 
 const register = document.getElementById("register");
 if (register) {

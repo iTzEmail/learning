@@ -3,7 +3,15 @@ const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-// Helper to get JS files in pages folder only
+
+// Main files
+const mainDir = path.resolve(__dirname, 'src/js/main');
+const mainFiles = fs.readdirSync(mainDir)
+    .filter(f => f.endsWith('.js'))
+    .map(f => path.resolve(mainDir, f));
+
+
+// JS files
 function getPageJsFiles(dir) {
     const entries = {};
     fs.readdirSync(dir).forEach(file => {
@@ -18,31 +26,33 @@ function getPageJsFiles(dir) {
     return entries;
 }
 
-const pagesDir = path.resolve(__dirname, 'src/js/pages');
-const jsPages = getPageJsFiles(pagesDir);
+const jsPagesDir = path.resolve(__dirname, 'src/js/pages');
+const jsPages = getPageJsFiles(jsPagesDir);
 
-const htmlDir = path.resolve(__dirname, 'src/pages');
+
+// HTML files
+const htmlDir = path.resolve(__dirname, 'src/html/pages');
 const htmlPages = fs
     .readdirSync(htmlDir)
     .filter(file => file.endsWith('.html'))
     .map(file => path.basename(file, '.html'));
 
-// Create HtmlWebpackPlugin instances per page
 const htmlPlugins = htmlPages.map(page => {
     return new HtmlWebpackPlugin({
         template: path.join(htmlDir, `${page}.html`),
         filename: `${page}.html`,
-        chunks: ['main', page], // include shared main + page-specific JS
+        chunks: ['main', 'components', page]
     });
 });
+
 
 module.exports = {
     mode: 'production',
     entry: {
-        main: [
-            path.resolve(__dirname, 'src/js/main/firebase.js'),
-            path.resolve(__dirname, 'src/js/main/session.js')
-        ],
+        main: mainFiles,
+        components: fs.readdirSync(path.resolve(__dirname, 'src/js/components'))
+            .filter(f => f.endsWith('.js'))
+            .map(f => path.resolve(__dirname, 'src/js/components', f)),
         ...jsPages
     },
     output: {
@@ -63,7 +73,8 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'src/css', to: 'css' },
-                { from: 'src/assets', to: 'assets', noErrorOnMissing: true }
+                { from: 'src/assets', to: 'assets', noErrorOnMissing: true },
+                { from: 'src/html/components', to: 'components', noErrorOnMissing: true }
             ]
         })
     ],

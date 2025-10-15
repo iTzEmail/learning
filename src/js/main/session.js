@@ -6,11 +6,7 @@ import { SESSION_CONFIG } from "../config.js";
 
 /// Cookies
 import { setPersistence, browserLocalPersistence } from "firebase/auth";
-
 setPersistence(auth, browserLocalPersistence)
-    .then(() => {
-        console.log("Auth persistence set to local")
-    })
     .catch((error) => {
         console.error("Error setting auth persistence:", error)
     })
@@ -22,21 +18,19 @@ let idleTimer;
 
 function logout() {
     signOut(auth).then(() => {
+        clearTimeout(idleTimer);
         localStorage.removeItem("loginTime");
-
+        
         window.location.href = "login";
     });
 }
 
 function startIdleTimer() {
-    const idleDuration = SESSION_CONFIG.idleTimeout
-    const maxSessionDuration = SESSION_CONFIG.maxSessionDuration;
-
     function reset() {
         clearTimeout(idleTimer);
 
-        const loginTime = ocalStorage.getItem("loginTime")
-        if (loginTime && (Date.now() - loginTime) > maxSessionDuration) {
+        const loginTime = localStorage.getItem("loginTime")
+        if (loginTime && (Date.now() - loginTime) > SESSION_CONFIG.maxSessionDuration) {
             logout();
             return;
         }
@@ -45,7 +39,7 @@ function startIdleTimer() {
             logout();
 
             alert('You have been logged out due to inactivity.');
-        }, idleDuration);
+        }, SESSION_CONFIG.idleDuration);
     }
 
     // Listen to user activity
@@ -57,13 +51,18 @@ function startIdleTimer() {
     reset();
 }
 
-export function startSession() {
+export function startSession({ requireAuth = false } = {}) {
     onAuthStateChanged(auth, (user) => {
+        console.log(user);
+
         if (user) {
             if (!localStorage.getItem("loginTime")) {
                 localStorage.setItem("loginTime", Date.now());
             }
             startIdleTimer();
+            
+        } else if (requireAuth) {
+            window.location.href = "login";
         }
     });
 }

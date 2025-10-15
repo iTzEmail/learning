@@ -4,132 +4,132 @@ import { auth, db } from "../main/firebase.js";
 
 /// Session
 import { startSession } from "../main/session.js";
-startSession()
+startSession({ requireAuth: true });
 
 
 // Logout
-import { signOut } from 'firebase/auth';
+// import { signOut } from 'firebase/auth';
 
-const logout = document.querySelector('.logout');
-if (logout) {
-    logout.addEventListener("click", async () => {
-        await signOut(auth);
+// const logout = document.querySelector('.logout');
+// if (logout) {
+//     logout.addEventListener("click", async () => {
+//         await signOut(auth);
 
-        window.location.href = "login";
-    })
-}
-
-
-
-// Real time collection data
-import { collection, onSnapshot, doc, query, where, orderBy } from 'firebase/firestore';
-
-const colRef = collection(db, 'books');
-
-// Queries
-// const q = query(colRef, where("author", "==", "patrick rothfuss"), orderBy('createdAt', 'desc'));
-const q = query(colRef, orderBy('createdAt', 'desc'));
-const unsubCol = onSnapshot(q, (snapshot) => {
-    let books = [];
-    snapshot.docs.forEach((doc) => {
-        books.push({ ...doc.data(), id: doc.id });
-    });
-    
-    console.log(books);
-});
+//         window.location.href = "login";
+//     })
+// }
 
 
-// Adding documents
-import { addDoc, serverTimestamp } from 'firebase/firestore';
 
-const addBook = document.querySelector('.add');
-if (addBook) {
-    addBook.addEventListener('submit', (e) => {
-        e.preventDefault();
+// // Real time collection data
+// import { collection, onSnapshot, doc, query, where, orderBy } from 'firebase/firestore';
 
-        addDoc(colRef, {
-            title: addBook.title.value,
-            author: addBook.author.value,
-            createdAt: serverTimestamp()
-        })
-        .then(() => {
-            alert('Book successfully added!');
+// const colRef = collection(db, 'books');
 
-            addBook.reset();
-        })
-        .catch(err => { 
-            console.log(err.message);
-        });
-    });
-}
-
-
-// Deleting documents
-import { deleteDoc } from 'firebase/firestore';
-
-const deleteBook = document.querySelector('.delete');
-if (deleteBook) {
-    deleteBook.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const docRef = doc(db, 'books', deleteBook.id.value);
-        deleteDoc(docRef)
-            .then(() => {
-                alert('Book successfully deleted!'); 
-
-                deleteBook.reset();
-            })
-            .catch(err => {
-                console.log(err.message);
-            });
-    });
-}
-
-
-// Get a single document
-import { getDoc } from 'firebase/firestore';
-
-const docRef = doc(db, 'books', 'iKQDpDRXxlLbZJF15Vu8');
-// getDoc(docRef)
-//     .then((doc) => {
-//         console.log(doc.data(), doc.id);
+// // Queries
+// // const q = query(colRef, where("author", "==", "patrick rothfuss"), orderBy('createdAt', 'desc'));
+// const q = query(colRef, orderBy('createdAt', 'desc'));
+// const unsubCol = onSnapshot(q, (snapshot) => {
+//     let books = [];
+//     snapshot.docs.forEach((doc) => {
+//         books.push({ ...doc.data(), id: doc.id });
 //     });
+    
+//     console.log(books);
+// });
 
-const unsubDoc = onSnapshot(docRef, (doc) => {
-    console.log(doc.data(), doc.id);
-});
+
+// // Adding documents
+// import { addDoc, serverTimestamp } from 'firebase/firestore';
+
+// const addBook = document.querySelector('.add');
+// if (addBook) {
+//     addBook.addEventListener('submit', (e) => {
+//         e.preventDefault();
+
+//         addDoc(colRef, {
+//             title: addBook.title.value,
+//             author: addBook.author.value,
+//             createdAt: serverTimestamp()
+//         })
+//         .then(() => {
+//             alert('Book successfully added!');
+
+//             addBook.reset();
+//         })
+//         .catch(err => { 
+//             console.log(err.message);
+//         });
+//     });
+// }
 
 
-// Update document
-import { updateDoc } from 'firebase/firestore';
+// // Deleting documents
+// import { deleteDoc } from 'firebase/firestore';
 
-const updateBook = document.querySelector('.update');
-if (updateBook) {
-    updateBook.addEventListener('submit', (e) => {
-        e.preventDefault();
+// const deleteBook = document.querySelector('.delete');
+// if (deleteBook) {
+//     deleteBook.addEventListener('submit', (e) => {
+//         e.preventDefault();
 
-        const docRef = doc(db, 'books', updateBook.id.value);
-        updateDoc(docRef, {
-            title: 'updated title',
-            author: 'updated author'
-        })
-        .then(() => {
-            alert('Book successfully updated!');
+//         const docRef = doc(db, 'books', deleteBook.id.value);
+//         deleteDoc(docRef)
+//             .then(() => {
+//                 alert('Book successfully deleted!'); 
+
+//                 deleteBook.reset();
+//             })
+//             .catch(err => {
+//                 console.log(err.message);
+//             });
+//     });
+// }
+
+
+// // Get a single document
+// import { getDoc } from 'firebase/firestore';
+
+// const docRef = doc(db, 'books', 'iKQDpDRXxlLbZJF15Vu8');
+// // getDoc(docRef)
+// //     .then((doc) => {
+// //         console.log(doc.data(), doc.id);
+// //     });
+
+// const unsubDoc = onSnapshot(docRef, (doc) => {
+//     console.log(doc.data(), doc.id);
+// });
+
+
+// // Update document
+// import { updateDoc } from 'firebase/firestore';
+
+// const updateBook = document.querySelector('.update');
+// if (updateBook) {
+//     updateBook.addEventListener('submit', (e) => {
+//         e.preventDefault();
+
+//         const docRef = doc(db, 'books', updateBook.id.value);
+//         updateDoc(docRef, {
+//             title: 'updated title',
+//             author: 'updated author'
+//         })
+//         .then(() => {
+//             alert('Book successfully updated!');
             
-            updateBook.reset();
-        })
-        .catch(err => {
-            console.log(err.message);
-        });
-    });
-}
+//             updateBook.reset();
+//         })
+//         .catch(err => {
+//             console.log(err.message);
+//         });
+//     });
+// }
 
 
-// Unsubscribe from changes (for testing purposes)
-const unsub = document.querySelector('.unsub');
-unsub.addEventListener('click', () => {
-    console.log('Unsubscribing from collection changes');
+// // Unsubscribe from changes (for testing purposes)
+// const unsub = document.querySelector('.unsub');
+// unsub.addEventListener('click', () => {
+//     console.log('Unsubscribing from collection changes');
 
-    unsubCol();
-    unsubDoc();
-});
+//     unsubCol();
+//     unsubDoc();
+// });
