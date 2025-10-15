@@ -1,12 +1,6 @@
 import { update } from "firebase/database";
 import { auth, db } from "../main/firebase.js";
 
-
-/// Session
-import { startSession } from "../main/session.js";
-startSession({ requireAuth: true });
-
-
 // Logout
 // import { signOut } from 'firebase/auth';
 

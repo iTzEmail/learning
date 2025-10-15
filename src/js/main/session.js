@@ -51,18 +51,31 @@ function startIdleTimer() {
     reset();
 }
 
-export function startSession({ requireAuth = false } = {}) {
-    onAuthStateChanged(auth, (user) => {
-        console.log(user);
 
-        if (user) {
+// Browser change
+import { initHeader, updateHeaderAuth } from "../components/header.js"
+initHeader();
+
+onAuthStateChanged(auth, (user) => {
+    updateHeaderAuth(user);
+
+    const path = window.location.pathname;
+    const requiresAuth = !(path === '/'  || path === 'index' || path === 'login' || path === 'register' || path === 'check-email' || path === 'reset');
+    console.log('auth', user, path, requiresAuth);
+
+    if (user) {
+        if (requiresAuth) {
             if (!localStorage.getItem("loginTime")) {
                 localStorage.setItem("loginTime", Date.now());
             }
             startIdleTimer();
-            
-        } else if (requireAuth) {
-            window.location.href = "login";
+
+        } else {
+            // User is on a public page
+            window.location.href = "dashboard";
         }
-    });
-}
+
+    } else if (requiresAuth) {
+        window.location.href = "login";
+    }
+})
