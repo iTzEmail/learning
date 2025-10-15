@@ -1,49 +1,71 @@
 const path = require('path');
 const fs = require('fs');
-const HtmlWebPackPlugin = require('html-webpack-plugin');
-const CopyWebPackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-// Get JS files
-const srcDir = path.resolve(__dirname, 'src/js');
-const pages = fs
-  .readdirSync(srcDir)
-  .filter(file => file.endsWith('.js'))
-  .map(file => path.basename(file, '.js'));
+// Helper to get JS files in pages folder only
+function getPageJsFiles(dir) {
+    const entries = {};
+    fs.readdirSync(dir).forEach(file => {
+        const fullPath = path.join(dir, file);
+        const stat = fs.statSync(fullPath);
+
+        if (stat.isFile() && file.endsWith('.js')) {
+            const name = path.basename(file, '.js');
+            entries[name] = fullPath;
+        }
+    });
+    return entries;
+}
+
+const pagesDir = path.resolve(__dirname, 'src/js/pages');
+const jsPages = getPageJsFiles(pagesDir);
+
+const htmlDir = path.resolve(__dirname, 'src/pages');
+const htmlPages = fs
+    .readdirSync(htmlDir)
+    .filter(file => file.endsWith('.html'))
+    .map(file => path.basename(file, '.html'));
+
+// Create HtmlWebpackPlugin instances per page
+const htmlPlugins = htmlPages.map(page => {
+    return new HtmlWebpackPlugin({
+        template: path.join(htmlDir, `${page}.html`),
+        filename: `${page}.html`,
+        chunks: ['main', page], // include shared main + page-specific JS
+    });
+});
 
 module.exports = {
-    mode: 'development',
-    entry: pages.reduce((config, page) => {
-        config[page] = `./src/js/${page}.js`;
-        return config;
-    }, {}),
+    mode: 'production',
+    entry: {
+        main: [
+            path.resolve(__dirname, 'src/js/main/firebase.js'),
+            path.resolve(__dirname, 'src/js/main/session.js')
+        ],
+        ...jsPages
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].js'
+        filename: 'js/[name].js',
+        clean: true
     },
-    optimization: {
-        splitChunks: {
-            chunks: "all"
-        },
+    module: {
+        rules: [
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader']
+            }
+        ]
     },
     plugins: [
-        // HtmlWebPackPlugin for all pages
-        ...pages.map(
-        (page) =>
-            new HtmlWebPackPlugin({
-            inject: true,
-            template: `./src/pages/${page}.html`,
-            filename: `${page}.html`,
-            chunks: [page],
-            })
-        ),
-
-        // CopyWebPackPlugin
-        new CopyWebPackPlugin({
-        patterns: [
-            { from: 'src/css', to: 'css' }, // CSS files
-            { from: 'src/assets', to: 'assets', noErrorOnMissing: true } // Copy assets
-        ]
+        ...htmlPlugins,
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'src/css', to: 'css' },
+                { from: 'src/assets', to: 'assets', noErrorOnMissing: true }
+            ]
         })
     ],
     watch: true
-}
+};
