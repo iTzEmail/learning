@@ -52,7 +52,7 @@ function startIdleTimer() {
 
 
 // Header & Auth
-import { initHeader, updateHeaderAuth } from "../components/header.js"
+import { init, updateHeaderAuth } from "../components/main.js"
 
 const publicPages = ['', 'index', 'login', 'register', 'check-email', 'reset'];
 onAuthStateChanged(auth, (user) => {
@@ -71,8 +71,11 @@ onAuthStateChanged(auth, (user) => {
         return;
     }
 
-    initHeader();
+    // Setup page
+    init();
     updateHeaderAuth(user);
+
+    document.body.style.display = "grid";
 
     if (user) {
         // Logged in

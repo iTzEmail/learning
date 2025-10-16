@@ -1,28 +1,25 @@
 <header id="site-header">
-    <div class="header-left">
-        <a href="index" class="logo">
-            <img src="/assets/logo.png" alt="Logo"/>
-        </a>
-    </div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index" class="logo">
+                <img src="/assets/logo.png" alt="Logo"/>
+            </a>
 
-    <nav class="header-nav">
-        <!-- Not logged-in -->
-        <ul class="guest-links">
-            <li><a href="/login" class="nav-link">Login</a></li>
-            <li><a href="/register" class="nav-link">Register</a></li>
-        </ul>
-        
-        <!-- Logged-in -->
-        <div class="user-info">
-            <img src="" alt="User Avatar" class="user-avatar" />
-            <span class="user-name"></span>
-            <button id="logout" class="logout" title="Logout">
-                <!-- Logout -->
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                    <path d="M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12 19H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </button>
+            <ul class="nav-links" id="navLinks">
+                <li class="mobile-auth-buttons">
+                    <a href="login" class="auth-btn login-btn">Login</a>
+                    <a href="register" class="auth-btn signup-btn">Register</a>
+                    <a href="#" class="auth-btn logout-btn">Logout</a>
+                </li>
+            </ul>
+
+            <div class="auth-buttons">
+                <a href="login" class="auth-btn login-btn">Login</a>
+                <a href="register" class="auth-btn signup-btn">Register</a>
+                <a href="#" class="auth-btn logout-btn">Logout</a>
+            </div>
+            
+            <button class="menu-toggle" id="menuToggle">☰</button>
         </div>
     </nav>
 </header>

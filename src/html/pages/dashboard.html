@@ -1,43 +1,45 @@
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css">
 
-    <title>Firebase 9</title>
-</head>
+        <title>Firebase 9</title>
+    </head>
 
-<body>
-    <h1>Getting started with Firebase 9</h1>
+    <body>
+        <div class="site">
+            <h1>Getting started with Firebase 9</h1>
 
-    <h2>Firebase Firestore</h2>
+            <h2>Firebase Firestore</h2>
 
-    <form class="add">
-        <label for="title">Title:</label>
-        <input type="text" name="title" required>
-        <label for="author">Author:</label>
-        <input type="text" name="author" required>
+            <form class="add">
+                <label for="title">Title:</label>
+                <input type="text" name="title" required>
+                <label for="author">Author:</label>
+                <input type="text" name="author" required>
 
-        <button>Add a new book</button>
-    </form>
+                <button>Add a new book</button>
+            </form>
 
-    <form class="delete">
-        <label for="id">Document ID:</label>
-        <input type="text" name="id" required>
+            <form class="delete">
+                <label for="id">Document ID:</label>
+                <input type="text" name="id" required>
 
-        <button>Delete a book</button>
-    </form>
+                <button>Delete a book</button>
+            </form>
 
-    <form class="update">
-        <label for="id">Document ID:</label>
-        <input type="text" name="id" required>
+            <form class="update">
+                <label for="id">Document ID:</label>
+                <input type="text" name="id" required>
 
-        <button>Save changes</button>
-    </form>
+                <button>Save changes</button>
+            </form>
 
 
-    <h2>Unsubscribing</h2>
+            <h2>Unsubscribing</h2>
 
-    <button class="unsub">Unsubscribe from db/auth changes</button>
-</body>
+            <button class="unsub">Unsubscribe from db/auth changes</button>
+        </div>
+    </body>
 </html>
