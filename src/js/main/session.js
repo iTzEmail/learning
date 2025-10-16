@@ -3,12 +3,11 @@ import { signOut, onAuthStateChanged  } from "firebase/auth";
 import { SESSION_CONFIG } from "../config.js";
 
 
-
 /// Cookies
 import { setPersistence, browserLocalPersistence } from "firebase/auth";
 setPersistence(auth, browserLocalPersistence)
     .catch((error) => {
-        console.error("Error setting auth persistence:", error)
+        console.error("Error setting  auth persistence:", error)
     })
 
 
@@ -19,12 +18,12 @@ let idleTimer;
 function logout() {
     signOut(auth).then(() => {
         clearTimeout(idleTimer);
+
         localStorage.removeItem("loginTime");
         
-        window.location.href = "login";
+        window.location.replace("/login");
     });
 }
-
 function startIdleTimer() {
     function reset() {
         clearTimeout(idleTimer);
@@ -52,30 +51,36 @@ function startIdleTimer() {
 }
 
 
-// Browser change
+// Header & Auth
 import { initHeader, updateHeaderAuth } from "../components/header.js"
-initHeader();
 
+const publicPages = ['', 'index', 'login', 'register', 'check-email', 'reset'];
 onAuthStateChanged(auth, (user) => {
+    const loginTime = localStorage.getItem("loginTime")
+
+    const path = window.location.pathname.replace(/^\//, '');
+    const isPublic = publicPages.includes(path);
+    const is404 = document.querySelector('meta[name="page-type"][content="404"]') !== null;
+    if (user && isPublic) {
+        // Is on a public page while logged in
+        window.location.replace("/dashboard");
+        return;
+
+    } else if (!user && !isPublic && !is404) {
+        window.location.replace('/login');
+        return;
+    }
+
+    initHeader();
     updateHeaderAuth(user);
 
-    const path = window.location.pathname;
-    const requiresAuth = !(path === '/'  || path === 'index' || path === 'login' || path === 'register' || path === 'check-email' || path === 'reset');
-    console.log('auth', user, path, requiresAuth);
-
     if (user) {
-        if (requiresAuth) {
-            if (!localStorage.getItem("loginTime")) {
-                localStorage.setItem("loginTime", Date.now());
-            }
-            startIdleTimer();
-
-        } else {
-            // User is on a public page
-            window.location.href = "dashboard";
-        }
-
-    } else if (requiresAuth) {
-        window.location.href = "login";
+        // Logged in
+        if (!loginTime) localStorage.setItem("loginTime", Date.now());
+        startIdleTimer();
+        
+    } else {
+        // No user logged in
+        if (loginTime) localStorage.removeItem('loginTime');
     }
 })
