@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/style.css">
+
+        <title>Register</title>
+        <link rel="icon" type="image/png" href="/assets/link-logo.png">
+
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    </head>
+    <body>
+        <div class="image-background" style="background-image: url('../assets/register.png');">
+            <div class="blur"></div>
+        </div>
+
+        <div class="site">
+            <h1>Create Account</h1>
+
+            <form id="register">
+                <input type="text" id="firstName" placeholder="First Name" required>
+                <input type="text" id="lastName" placeholder="Last Name" required>
+                <input type="date" id="dob" placeholder="Date of Birth" required>
+                <input type="email" id="email" placeholder="Email" autocomplete="on" required>
+                <input type="password" id="password" placeholder="Password" autocomplete="on" required>
+
+                <div class="g-recaptcha" data-sitekey="6LcEi-srAAAAAFBo9y0fpm3GWgYJvaungjP1wRq_"></div>
+
+                <button type="submit">Register</button>
+            </form>
+
+            <p>Already have an account? <a href="login">Login here</a></p>
+        </div>
+    </body>
+</html>
