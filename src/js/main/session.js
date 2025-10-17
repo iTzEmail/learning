@@ -53,13 +53,13 @@ function startIdleTimer() {
 
 // Header & Auth
 import { init, updateHeaderAuth } from "../components/main.js"
+import { PUBLIC_PAGES } from "../config.js";
 
-const publicPages = ['', 'index', 'login', 'register', 'check-email', 'reset'];
 onAuthStateChanged(auth, (user) => {
     const loginTime = localStorage.getItem("loginTime")
 
     const path = window.location.pathname.replace(/^\//, '');
-    const isPublic = publicPages.includes(path);
+    const isPublic = PUBLIC_PAGES.includes(path);
     const is404 = document.querySelector('meta[name="page-type"][content="404"]') !== null;
     if (user && isPublic) {
         // Is on a public page while logged in

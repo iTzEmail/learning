@@ -4,8 +4,11 @@ export const SESSION_CONFIG = {
 };
 
 
+export const PUBLIC_PAGES = ['', 'home', 'login', 'register', 'check-email', 'reset'];
+
+
 // Pages
-export const INDEX = {
+export const HOME = {
     playerDefaults: {autoplay: 1, controls: 0, modestbranding: 1, rel: 0, showinfo: 0, disablekb: 1, fs: 0, loop: 1, mute: 1},
     vids: [
         { videoId: 'M-PcjpkS7OY', startSeconds: 77, endSeconds: 130, suggestedQuality: 'hd720' },

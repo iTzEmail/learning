@@ -75,5 +75,5 @@ export function updateHeaderAuth(user) {
         signup.forEach(btn => btn.style.display = "inline-flex");
     }
 
-    logo.href = !!user ? "/dashboard" : "/index"
+    logo.href = !!user ? "/dashboard" : "/home"
 }

@@ -3,7 +3,17 @@
     "public": "dist",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "cleanUrls": true,
-    "errorPages": [
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/home.html"
+      },
+      {
+        "source": "/home",
+        "destination": "/home.html"
+      }
+    ],
+    "errorPage": [
       {
         "code": 404,
         "location": "/404"
