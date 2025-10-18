@@ -16,30 +16,137 @@
     padding: 20px;
 }
 
-.main-content a,
-.ready-content a {
-    font-size: 1.05rem;
-}
-
-.main h1,
-.ready h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 20px;
-}
-
-.main p,
-.ready p {
+.desc {
     color: #bbbbbb;
     font-size: 1.3rem;
     max-width: 700px;
     margin: 0 auto 30px auto;
 }
 
+.main-content .desc {
+    margin-top: 20px;
+}
+
+.main-content a,
+.ready-content a {
+    font-size: 1.05rem;
+}
+
 .highlight {
     color: #FFD700;
     display: block;
+}
+
+
+/* Spinning text */
+@layer demo {
+    .words,
+    .word,
+    .char,
+    .char::before,
+    .char::after {
+        transform-style: preserve-3d;
+        display: inline-block;
+    }
+    .splitting {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 20px;
+        transition: transform 0.5s;
+    }
+
+    .splitting p {
+        transition: opacity 0.5s;
+    }
+
+    /* Each line of text */
+    p:nth-of-type(1) {
+        --idx: 0;
+    }
+    p:nth-of-type(1) .char::before,
+    p:nth-of-type(1) .char::after {
+        color: white !important;
+    }
+
+    p:nth-of-type(2) {
+        --idx: 1;
+    }
+    p:nth-of-type(2) .char::before,
+    p:nth-of-type(2) .char::after {
+        color: #FFD700 !important;
+    }
+
+    .splitting p {
+        font-size: 3rem;
+        display: block;
+        margin: 0;
+        font-weight: 700;
+        text-decoration: none;
+        width: fit-content;
+        line-height: 1.2;
+        vertical-align: baseline;
+    }
+
+    .splitting p .char {
+        --duration: 2.2s;
+        --delay: calc(
+        (
+            sin((var(--char-index) / var(--char-total)) * 90deg) *
+                (var(--duration) * 0.25)
+            ) - (var(--idx) * -0.25s)
+        );
+        display: inline-block;
+        animation: flip var(--duration) var(--delay) infinite ease;
+    }
+
+    @keyframes flip {
+        25%,
+        100% {
+        transform: rotateX(90deg);
+        }
+    }
+
+    .splitting .char {
+        color: transparent;
+        position: relative;
+        height: 0.9lh;
+        line-height: 1;
+        vertical-align: middle;
+
+        &::after,
+        &::before {
+            color: canvasText;
+            content: attr(data-char);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 1lh;
+            width: 100%;
+            animation: fade var(--duration) var(--delay) infinite ease;
+        }
+
+        &::before {
+            transform-origin: 50% 50%;
+            translate: -50% -50%;
+            transform: rotateX(-90deg) translate3d(0, 0, 0.45lh);
+            opacity: 0;
+            --opacity: 1;
+        }
+
+        &::after {
+            translate: -50% -50%;
+            transform: translate3d(0, 0, 0.45lh);
+        }
+    }
+
+    @keyframes fade {
+        30%,
+        100% {
+            opacity: var(--opacity, 0);
+        }
+    }
 }
 
 
@@ -62,9 +169,6 @@
     margin-bottom: 5px;
 }
 .features-content p {
-    max-width: 700px;
-    color: #bbbbbb;
-    font-size: 1.3rem;
     margin: 0 auto 50px auto;
     text-align: center;
     margin-bottom: 50px;
@@ -177,4 +281,11 @@
     text-align: center;
     background-color: #4B5320;
     color: white;
+}
+
+.ready h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 20px;
 }

@@ -1,5 +1,7 @@
 import { HOME } from "../config.js";
 
+
+/// Playing video
 var tag = document.createElement('script');
 tag.src = 'https://www.youtube.com/player_api';
 
