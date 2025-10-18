@@ -56,6 +56,11 @@ import { init, updateHeaderAuth } from "../components/main.js"
 import { PUBLIC_PAGES } from "../config.js";
 
 onAuthStateChanged(auth, (user) => {
+    if (user && !user.emailVerified) {
+        logout();
+        return
+    }
+
     const loginTime = localStorage.getItem("loginTime")
 
     const path = window.location.pathname.replace(/^\//, '');

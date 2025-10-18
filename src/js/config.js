@@ -15,3 +15,19 @@ export const HOME = {
         { videoId: 'W_14QhYt-O4', startSeconds: 35, endSeconds: 100, suggestedQuality: 'hd720' },
     ]
 };
+
+export const REGISTER = {
+    required: {
+        length: { regex: /.{15,}/, text: "At least 15 characters" },
+        upper: { regex: /[A-Z]/, text: "One uppercase letter" },
+        lower: { regex: /[a-z]/, text: "One lowercase letter" },
+        number: { regex: /\d/, text: "One number" },
+        special: { regex: /[!@#$%^&*(),.?\":{}|<>_\\-]/, text: "One special character" },
+    },
+    errors: {
+        "auth/email-already-in-use": "User already exists",
+        "auth/invalid-email": "Invalid email address",
+        "auth/weak-password": "Password is too weak",
+        "auth/network-request-failed": "Network error, please try again",
+    }
+}

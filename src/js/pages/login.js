@@ -1,11 +1,11 @@
 import { auth } from "../main/firebase.js";
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 const login = document.getElementById("login");
 if (login) {
     onAuthStateChanged(auth, (user) => {
         if (user) {
-            window.location.href = "dashboard";
+            window.location.replace("/dashboard");
         }
     });
 
@@ -16,12 +16,15 @@ if (login) {
         const password = e.target.password.value;
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            if (!userCredential.user.emailVerified) {
+            const user = userCredential.user;
+            if (!user.emailVerified) {
+                await signOut(auth);
+                
                 alert("Please verify your email before logging in.");
                 return;
             };
             
-            window.location.href = "dashboard";
+            window.location.replace("/dashboard");
 
         } catch (error) {
             alert(error.message);

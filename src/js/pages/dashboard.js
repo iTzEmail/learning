@@ -9,7 +9,7 @@ import { auth, db } from "../main/firebase.js";
 //     logout.addEventListener("click", async () => {
 //         await signOut(auth);
 
-//         window.location.href = "login";
+//         window.location.replace("/login");
 //     })
 // }
 

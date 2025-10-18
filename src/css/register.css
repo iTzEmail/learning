@@ -1,0 +1,57 @@
+.site {
+    width: 100%;
+    max-width: 800px;
+    padding: 60px 0;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    color: white;
+}
+.site h1 {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-field,
+.field {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.g-recaptcha {
+    margin: 5px 0;
+}
+
+.already {
+    margin-top: 30px;
+}
+
+
+/* Password checklist */
+.password-checklist {
+    list-style: none;
+    padding-left: 0;
+    font-size: 0.85;
+    margin: 4px 0 0 0;
+    font-size: 0.9rem;
+    margin-top: 4px;
+    min-height: 1em;
+    text-align: left;
+}
+.password-checklist li {
+    color: red;
+}

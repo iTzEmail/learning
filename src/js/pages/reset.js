@@ -12,7 +12,7 @@ if (reset) {
 
             alert("Password reset email sent. Check your inbox.");
 
-            window.location.href = "login";
+            window.location.replace("/login");
 
         } catch (error) {
             alert(error.message);

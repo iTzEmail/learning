@@ -1,3 +1,5 @@
+/// Header and Footer
+import { doc } from "firebase/firestore";
 import { auth } from "../main/firebase.js";
 import { signOut } from "firebase/auth";
 
@@ -38,9 +40,16 @@ export function init() {
             logoutBtns.forEach(btn => {
                 btn.addEventListener("click", async (e) => {
                     e.preventDefault();
+
                     localStorage.removeItem("loginTime");
+
                     await signOut(auth);
-                    window.location.replace("/login");
+
+                    onAuthStateChanged(auth, (user) => {
+                        if (!user) {
+                            window.location.replace("/login");
+                        }
+                    });
                 });
             });
         })
@@ -77,3 +86,73 @@ export function updateHeaderAuth(user) {
 
     logo.href = !!user ? "/dashboard" : "/home"
 }
+
+
+/// Toast
+export function toast({ title, message = "", type = "info", duration = 3000 }) {
+    if (!document.getElementById("toast")) {
+        const container = document.createElement("div");
+        container.id = "toast";
+        document.body.appendChild(container);
+    }
+
+    const main = document.getElementById("toast");
+    if (main) {
+        const toast = document.createElement("div");
+
+        // Auto remove toast
+        const autoRemoveId = setTimeout(function() {
+            main.removeChild(toast);
+        }, duration + 1000);
+
+        // Remove toast when clicked
+        toast.onclick = function (e) {
+            main.removeChild(toast);
+            clearTimeout(autoRemoveId);
+        }
+
+        const icons = {
+            success: "fas fa-check-circle",
+            info: "fas fa-info-circle",
+            warning: "fas fa-exclamation-circle",
+            error: "fas fa-exclamation-circle"
+        }
+        const titles = {
+            success: "Success",
+            info: "Info",
+            warning: "Warning",
+            error: "Error"
+        }
+        const icon = icons[type];
+        const delay = (duration / 1000).toFixed(2);
+
+        toast.classList.add("toast", `toast--${type}`);
+        toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+        toast.innerHTML = `
+                        <div class="toast__icon">
+                            <i class="${icon}"></i>
+                        </div>
+                        <div class="toast__body">
+                            <h3 class="toast__title">${title || titles[type] || ""}</h3>
+                            <p class="toast__msg">${message || (type === "error" ? "An unknown error occurred" : "")}</p>
+                        </div>
+                        <div class="toast__close">
+                            <i class="fas fa-times"></i>
+                        </div>
+                    `;
+        main.appendChild(toast);
+    }
+}
+
+
+/// Unfocus input box
+document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("keydown", function(e) {
+        if (e.key == "Enter") {
+            e.preventDefault()
+
+            input.blur();
+        }
+    });
+})

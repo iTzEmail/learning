@@ -18,7 +18,7 @@ if (resend && resend_message) {
 
         } else {
             // No user logged in, redirect to register
-            window.location.href = "register";
+            window.location.replace("/register");
         }
     });
 }
