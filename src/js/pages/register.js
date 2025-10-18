@@ -29,7 +29,7 @@ if (passwordInput) {
     for (const [key, value] of Object.entries(checks)) {
         const li = document.createElement("li");
         li.dataset.check = key;
-        li.textContent = value.text;
+        li.textContent = `*${value.text}`;
         checklist.appendChild(li);
     }
     passwordInput.closest(".form-field").appendChild(checklist);
